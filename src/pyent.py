@@ -72,6 +72,7 @@ def Entropy(data,bins,min_value=None,max_value=None):
         max_value = max(data)
     Os,_ = np.histogram(data,bins=bins,range=(min_value,max_value),density=False)
     Ps = Os/len(data)
+    Ps = Ps[Ps>0]
     E = -np.sum(Ps*np.log2(Ps))
     return E
 
@@ -115,11 +116,11 @@ def ENT(data,bins,min_value=None,max_value=None,display=False):
     # Print out
     if display:
         print("Entropy = ", entropy, "bits per character.")
-        print("Optimum compression would reduce the size \
-        of this data by %.0f percent." %((max_ent-entropy)*100/max_ent))
+        print("Optimum compression would reduce the size of this data by %.0f percent."
+                    %((max_ent-entropy)*100/max_ent))
         print()
-        print("Chi square distribution is %.2e, and randomly would exceed \
-        this value %.1f percent of the times." %(chi2,chi2Q*100))
+        print("Chi square distribution is %.2e, and randomly would exceed this value %.1f percent of the times."
+                    %(chi2,chi2Q*100))
         print()
         print("Arithmetic mean value is %.2e" %mean)
         print("Median value is %.2e" %median)
