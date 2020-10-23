@@ -5,6 +5,7 @@
 
 """
 
+import sys
 import numpy as np
 from scipy.stats import chi2 as spChi2
 
@@ -129,3 +130,27 @@ def ENT(data,bins,min_value=None,max_value=None,display=False):
         print()
         print("Serial correlation coefficient is ", corr)
     return entropy, chi2, pi, corr
+
+
+def ent_file(fname, display=False):
+    """ Run ENT analysis on binary file fname
+    Data is read as bytes
+    """
+    with open(fname,'rb') as f:
+        data = f.read()
+    data = np.array(bytearray(data))
+    return ENT(data,1<<8,min_value=0,max_value=1<<8-1,display=display)
+
+
+if __name__=="__main__":
+    args = sys.argv
+    if len(args)<2:
+        fname = input("File name: ")
+        fnames = [fname]
+    else:
+        fnames = args[1:]
+    for fname in fnames:
+        print()
+        print("Test results for file: %s" %fname)
+        _ = ent_file(fname,True)
+        print("============")
